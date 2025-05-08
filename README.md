@@ -5,7 +5,7 @@
 ![logo_unsulbar](public/logo.jpg)
 
 <b>Rahmatia</b><br>
-<b>D02220XX</b><br>
+<b>D0222048</b><br>
 <b>Framework Web Based</b><br>
 <b>2025</b>
 </div>

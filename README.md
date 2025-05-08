@@ -1,91 +1,116 @@
-# 📄 README – Sistem Informasi Rental Kamera
+<p align="center"><strong>CamRent - Sistem Informasi Rental Kamera</strong></p>
+
+<div align="center">
+
+![logo_unsulbar](public/img/logo.jpg)
+
+<b>Rahmatia</b><br>
+<b>D02220XX</b><br>
+<b>Framework Web Based</b><br>
+<b>2025</b>
+</div>
 
 ---
 
-## 🏷️ Judul Proyek
+## Role dan Fitur-fiturnya
 
-**Sistem Informasi Rental Kamera**
-
----
-
-## 👤 Nama  
-**Rahmatia**
-
-## 🆔 NIM  
-**[Tulis NIM Anda]**
-
----
-
-## 📚 Mata Kuliah  
-**[Nama Mata Kuliah]**
-
-## 📅 Tahun  
-**2025**
-
----
-
-## 👥 Role dan Fitur-fiturnya
-
-### 🔐 Admin
-- Login dan autentikasi
-- Manajemen data kamera (tambah, edit, hapus)
-- Manajemen data pelanggan
-- Pengelolaan transaksi penyewaan dan pengembalian
-- Pembuatan laporan transaksi
-
-### 👤 Pelanggan
-- Registrasi dan login
+### Pelanggan
+- Registrasi & Login
 - Melihat daftar kamera
+- Melihat detail/deskripsi kamera
 - Melakukan penyewaan kamera
-- Melihat riwayat penyewaan
-- Mengembalikan kamera
+- Melihat status penyewaan
+- Melakukan pembayaran
+
+### Pemilik Usaha Rental Kamera
+- Registrasi & Login
+- Mengelola data kamera: Tambah/Edit/Hapus
+- Melihat daftar penyewa dan status sewa
+
+### Admin
+- Login
+- Mengelola akun pengguna (pelanggan & pemilik rental)
+- Mengelola kategori kamera
 
 ---
 
-## 🗃️ Tabel-Tabel Database beserta Field dan Tipe Datanya
+## Tabel-tabel database beserta field dan tipe datanya
 
-### 1. Tabel `kamera`
+### 1. Tabel users
+| Nama Field      | Tipe Data | Keterangan                                     |
+|-----------------|-----------|------------------------------------------------|
+| id              | BIGINT    | Primary key                                    |
+| nama            | VARCHAR   | Nama user                                      |
+| email           | VARCHAR   | Email unik user                                |
+| password        | VARCHAR   | Kata sandi (hashed)                            |
+| peran           | ENUM      | pelanggan, pemilik usaha, admin                |
+| created_at      | TIMESTAMP | Timestamp pembuatan                            |
+| updated_at      | TIMESTAMP | Timestamp pembaruan                            |
 
-| Nama Field     | Tipe Data     | Keterangan                     |
-|----------------|---------------|--------------------------------|
-| id_kamera      | INT           | Primary Key, Auto Increment    |
-| nama_kamera    | VARCHAR(100)  | Nama kamera                    |
-| jenis_kamera   | VARCHAR(50)   | DSLR/Mirrorless/Action, dll    |
-| harga_sewa     | DECIMAL(10,2) | Harga sewa per hari            |
-| status         | ENUM          | tersedia / disewa              |
+### 2. Tabel rentals (tempat usaha rental kamera)
+| Nama Field   | Tipe Data | Keterangan                              |
+|--------------|-----------|-----------------------------------------|
+| id           | BIGINT    | Primary key                             |
+| user_id      | BIGINT    | Foreign key ke tabel users (pemilik)    |
+| nama_rental  | VARCHAR   | Nama tempat rental kamera               |
+| alamat       | TEXT      | Lokasi rental                           |
+| no_tlp       | VARCHAR   | Kontak                                  |
+| deskripsi    | TEXT      | Profil / informasi rental               |
+| created_at   | TIMESTAMP | Timestamp pembuatan                     |
+| updated_at   | TIMESTAMP | Timestamp pembaruan                     |
 
-### 2. Tabel `pelanggan`
+### 3. Tabel cameras (kamera)
+| Nama Field       | Tipe Data | Keterangan                              |
+|------------------|-----------|-----------------------------------------|
+| id               | BIGINT    | Primary key                             |
+| rental_id        | BIGINT    | Foreign key ke rentals                  |
+| nama_kamera      | VARCHAR   | Nama kamera                             |
+| slug             | VARCHAR   | Untuk URL                               |
+| harga_sewa       | INT       | Harga sewa kamera per hari              |
+| gambar           | VARCHAR   | Gambar kamera                           |
+| jenis_sensor     | VARCHAR   | Contoh: CMOS, Full Frame, dll           |
+| resolusi         | VARCHAR   | Resolusi kamera                         |
+| status           | VARCHAR   | Tersedia / Tidak tersedia               |
+| deskripsi        | TEXT      | Detail kamera                           |
+| tripod           | TINYINT   | Tersedia tripod                         |
+| flash            | TINYINT   | Tersedia flash                          |
+| memory_card      | TINYINT   | Tersedia memory card                    |
+| created_at       | TIMESTAMP | Timestamp pembuatan                     |
+| updated_at       | TIMESTAMP | Timestamp pembaruan                     |
 
-| Nama Field     | Tipe Data     | Keterangan                     |
-|----------------|---------------|--------------------------------|
-| id_pelanggan   | INT           | Primary Key, Auto Increment    |
-| nama_lengkap   | VARCHAR(100)  | Nama pelanggan                 |
-| email          | VARCHAR(100)  | Email login                    |
-| password       | VARCHAR(255)  | Password terenkripsi           |
-| no_telepon     | VARCHAR(15)   | Nomor HP                       |
+### 4. Tabel bookings (penyewaan)
+| Nama Field       | Tipe Data | Keterangan                          |
+|------------------|-----------|-------------------------------------|
+| id               | BIGINT    | Primary key                         |
+| user_id          | BIGINT    | Foreign key ke users (pelanggan)    |
+| camera_id        | BIGINT    | Foreign key ke cameras              |
+| tanggal_mulai    | DATE      | Tanggal mulai penyewaan             |
+| tanggal_selesai  | DATE      | Tanggal selesai penyewaan           |
+| durasi           | VARCHAR   | Durasi sewa                         |
+| total_harga      | DECIMAL   | Total harga sewa                    |
+| status_booking   | ENUM      | pending, aktif, selesai             |
+| created_at       | TIMESTAMP | Timestamp pembuatan                 |
+| updated_at       | TIMESTAMP | Timestamp pembaruan                 |
 
-### 3. Tabel `penyewaan`
-
-| Nama Field     | Tipe Data     | Keterangan                     |
-|----------------|---------------|--------------------------------|
-| id_sewa        | INT           | Primary Key, Auto Increment    |
-| id_kamera      | INT           | Foreign Key → kamera           |
-| id_pelanggan   | INT           | Foreign Key → pelanggan        |
-| tanggal_sewa   | DATE          | Tanggal mulai sewa             |
-| tanggal_kembali| DATE          | Tanggal kembali                |
-| total_biaya    | DECIMAL(10,2) | Biaya total                    |
-| status         | ENUM          | berjalan / selesai             |
+### 5. Tabel payments (pembayaran)
+| Nama Field        | Tipe Data | Keterangan                          |
+|-------------------|-----------|-------------------------------------|
+| id                | BIGINT    | Primary key                         |
+| booking_id        | BIGINT    | Foreign key ke bookings             |
+| metode_pembayaran | VARCHAR   | Metode pembayaran                   |
+| status_pembayaran | ENUM      | berhasil, gagal, batal              |
+| bukti_pembayaran  | VARCHAR   | File bukti pembayaran               |
+| created_at        | TIMESTAMP | Timestamp pembuatan                 |
+| updated_at        | TIMESTAMP | Timestamp pembaruan                 |
 
 ---
 
-## 🔗 Jenis Relasi dan Tabel yang Berelasi
+## Jenis relasi dan tabel yang berelasi
 
-- `pelanggan` 🔗 `penyewaan` → **One to Many**  
-  (Satu pelanggan bisa memiliki banyak transaksi penyewaan)
-
-- `kamera` 🔗 `penyewaan` → **One to Many**  
-  (Satu kamera bisa disewa berkali-kali)
+- users (pemilik) ↔ rentals → One-to-Many  
+- rentals ↔ cameras → One-to-Many  
+- users (pelanggan) ↔ bookings → One-to-Many  
+- cameras ↔ bookings → One-to-Many  
+- bookings ↔ payments → One-to-One
 
 ---
-
-> 📌 *Catatan: Proyek ini dikembangkan menggunakan [teknologi yang digunakan, misalnya Laravel + MySQL + Bootstrap].*

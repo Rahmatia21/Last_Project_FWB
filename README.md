@@ -1,61 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><strong>CamRent - Sistem Informasi Rental Kamera</strong></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<div align="center">
 
-## About Laravel
+![logo_unsulbar](public/logo.jpg)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<b>Rahmatia</b><br>
+<b>D02220XX</b><br>
+<b>Framework Web Based</b><br>
+<b>2025</b>
+</div>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Role dan Fitur-fiturnya
 
-## Learning Laravel
+### Pelanggan
+- Registrasi & Login
+- Melihat daftar kamera
+- Melihat detail/deskripsi kamera
+- Melakukan penyewaan kamera
+- Melihat status penyewaan
+- Melakukan pembayaran
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Pemilik Usaha Rental Kamera
+- Registrasi & Login
+- Mengelola data kamera: Tambah/Edit/Hapus
+- Melihat daftar penyewa dan status sewa
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Admin
+- Login
+- Mengelola akun pengguna (pelanggan & pemilik rental)
+- Mengelola kategori kamera
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Tabel-tabel database beserta field dan tipe datanya
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Tabel users
+| Nama Field      | Tipe Data | Keterangan                                     |
+|-----------------|-----------|------------------------------------------------|
+| id              | BIGINT    | Primary key                                    |
+| nama            | VARCHAR   | Nama user                                      |
+| email           | VARCHAR   | Email unik user                                |
+| password        | VARCHAR   | Kata sandi (hashed)                            |
+| peran           | ENUM      | pelanggan, pemilik usaha, admin                |
+| created_at      | TIMESTAMP | Timestamp pembuatan                            |
+| updated_at      | TIMESTAMP | Timestamp pembaruan                            |
 
-### Premium Partners
+### 2. Tabel rentals (tempat usaha rental kamera)
+| Nama Field   | Tipe Data | Keterangan                              |
+|--------------|-----------|-----------------------------------------|
+| id           | BIGINT    | Primary key                             |
+| user_id      | BIGINT    | Foreign key ke tabel users (pemilik)    |
+| nama_rental  | VARCHAR   | Nama tempat rental kamera               |
+| alamat       | TEXT      | Lokasi rental                           |
+| no_tlp       | VARCHAR   | Kontak                                  |
+| deskripsi    | TEXT      | Profil / informasi rental               |
+| created_at   | TIMESTAMP | Timestamp pembuatan                     |
+| updated_at   | TIMESTAMP | Timestamp pembaruan                     |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Tabel cameras (kamera)
+| Nama Field       | Tipe Data | Keterangan                              |
+|------------------|-----------|-----------------------------------------|
+| id               | BIGINT    | Primary key                             |
+| rental_id        | BIGINT    | Foreign key ke rentals                  |
+| nama_kamera      | VARCHAR   | Nama kamera                             |
+| slug             | VARCHAR   | Untuk URL                               |
+| harga_sewa       | INT       | Harga sewa kamera per hari              |
+| gambar           | VARCHAR   | Gambar kamera                           |
+| jenis_sensor     | VARCHAR   | Contoh: CMOS, Full Frame, dll           |
+| resolusi         | VARCHAR   | Resolusi kamera                         |
+| status           | VARCHAR   | Tersedia / Tidak tersedia               |
+| deskripsi        | TEXT      | Detail kamera                           |
+| tripod           | TINYINT   | Tersedia tripod                         |
+| flash            | TINYINT   | Tersedia flash                          |
+| memory_card      | TINYINT   | Tersedia memory card                    |
+| created_at       | TIMESTAMP | Timestamp pembuatan                     |
+| updated_at       | TIMESTAMP | Timestamp pembaruan                     |
 
-## Contributing
+### 4. Tabel bookings (penyewaan)
+| Nama Field       | Tipe Data | Keterangan                          |
+|------------------|-----------|-------------------------------------|
+| id               | BIGINT    | Primary key                         |
+| user_id          | BIGINT    | Foreign key ke users (pelanggan)    |
+| camera_id        | BIGINT    | Foreign key ke cameras              |
+| tanggal_mulai    | DATE      | Tanggal mulai penyewaan             |
+| tanggal_selesai  | DATE      | Tanggal selesai penyewaan           |
+| durasi           | VARCHAR   | Durasi sewa                         |
+| total_harga      | DECIMAL   | Total harga sewa                    |
+| status_booking   | ENUM      | pending, aktif, selesai             |
+| created_at       | TIMESTAMP | Timestamp pembuatan                 |
+| updated_at       | TIMESTAMP | Timestamp pembaruan                 |
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 5. Tabel payments (pembayaran)
+| Nama Field        | Tipe Data | Keterangan                          |
+|-------------------|-----------|-------------------------------------|
+| id                | BIGINT    | Primary key                         |
+| booking_id        | BIGINT    | Foreign key ke bookings             |
+| metode_pembayaran | VARCHAR   | Metode pembayaran                   |
+| status_pembayaran | ENUM      | berhasil, gagal, batal              |
+| bukti_pembayaran  | VARCHAR   | File bukti pembayaran               |
+| created_at        | TIMESTAMP | Timestamp pembuatan                 |
+| updated_at        | TIMESTAMP | Timestamp pembaruan                 |
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Jenis relasi dan tabel yang berelasi
 
-## Security Vulnerabilities
+- users (pemilik) ↔ rentals → One-to-Many  
+- rentals ↔ cameras → One-to-Many  
+- users (pelanggan) ↔ bookings → One-to-Many  
+- cameras ↔ bookings → One-to-Many  
+- bookings ↔ payments → One-to-One
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
